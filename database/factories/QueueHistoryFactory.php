@@ -1,6 +1,8 @@
 <?php
 
 namespace Database\Factories;
+use App\Models\Patient;
+use App\Models\Doctor;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -16,8 +18,12 @@ class QueueHistoryFactory extends Factory
      */
     public function definition(): array
     {
+        $statuses = ['served', 'done'];
         return [
-            //
+            'patient_id' => Patient::factory(),
+            'doctor_id' => Doctor::factory(),
+            'call_time' => $this->faker->dateTimeThisMonth(),
+            'status' => $this->faker->randomElement($statuses),
         ];
     }
 }

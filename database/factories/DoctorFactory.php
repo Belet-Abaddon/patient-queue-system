@@ -17,7 +17,9 @@ class DoctorFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'specialist' => fake()->randomElement(['heart', 'skin', 'bone', 'eye', 'ear']),
+            'email' => fake()->unique()->safeEmail(),
         ];
     }
 }

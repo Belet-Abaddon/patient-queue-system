@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Factories;
+use app\Models\Doctor;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -16,8 +17,13 @@ class PatientFactory extends Factory
      */
     public function definition(): array
     {
+        $statuses = ['waiting', 'serving', 'done'];
         return [
-            //
+            'name' => fake()->name(),
+            'phone' => fake()->phoneNumber(),
+            'status' => fake()->randomElement($statuses),
+            'queue_number' => $this->faker->numberBetween(1, 50),
+            'doctor_id' => Doctor::factory(),
         ];
     }
 }
