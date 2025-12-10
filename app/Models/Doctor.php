@@ -15,5 +15,18 @@ class Doctor extends Model
         'specialist',
         'email',
         'phone',
+        'status'
     ];
+    public function patients()
+    {
+        return $this->hasMany(Patient::class, 'doctor_id');
+    }
+    public function schedules()
+    {
+        return $this->hasMany(DoctorSchedule::class, 'doctor_id');
+    }
+    public function queueHistories()
+    {
+        return $this->hasMany(QueueHistory::class, 'doctor_id');
+    }
 }
