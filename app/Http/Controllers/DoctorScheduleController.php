@@ -7,59 +7,82 @@ use Illuminate\Http\Request;
 
 class DoctorScheduleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
+        $validated = $request->validate([
+            'doctor_id' => 'required|exists:doctors,id',
+            'day' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(DoctorSchedule $doctorSchedule)
-    {
-        //
-    }
+        $schedule = DoctorSchedule::create($validated);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DoctorSchedule $doctorSchedule)
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'message' => 'Schedule created successfully',
+            'data' => $schedule
+        ]);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, DoctorSchedule $doctorSchedule)
+    public function update(Request $request)
     {
-        //
+        $id = $request->input('id');
+        $schedule = DoctorSchedule::findOrFail($id);
+
+        $validated = $request->validate([
+            'doctor_id' => 'required|exists:doctors,id',
+            'day' => 'required|string|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+        ]);
+
+        $schedule->update($validated);
+
+        if ($request->wantsJson() || $request->is('api/*')) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Schedule updated successfully',
+                'data' => $schedule
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Schedule updated successfully');
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DoctorSchedule $doctorSchedule)
+    public function destroy($id)
     {
-        //
+        $schedule = DoctorSchedule::findOrFail($id);
+        $schedule->status = 0;
+        $schedule->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Schedule deleted successfully'
+        ]);
+    }
+    public function getByDoctor($doctorId)
+    {
+        $schedules = DoctorSchedule::where('doctor_id', $doctorId)
+            ->where('status', 1)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $schedules
+        ]);
+    }
+    public function index()
+    {
+        // $schedules = DoctorSchedule::with('doctor')
+        //     ->where('status', 1)
+        //     ->get();
+
+        // return response()->json([
+        //     'success' => true,
+        //     'data' => $schedules
+        // ]);
+        $schedules = DoctorSchedule::all();
+        return response()->json([
+            'data' => $schedules
+        ]);
     }
 }

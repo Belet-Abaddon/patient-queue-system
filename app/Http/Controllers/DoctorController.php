@@ -48,21 +48,17 @@ class DoctorController extends Controller
 
     public function update(Request $request)
     {
-        // Get doctor ID from request
         $id = $request->input('id');
         $doctor = Doctor::findOrFail($id);
 
-        // Validate data
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'specialist' => 'required|string|max:255',
             'email' => 'required|email|unique:doctors,email,' . $id,
         ]);
 
-        // Update doctor
         $doctor->update($validated);
 
-        // Check if it's an API request (Postman)
         if ($request->wantsJson() || $request->is('api/*')) {
             return response()->json([
                 'success' => true,
@@ -71,7 +67,6 @@ class DoctorController extends Controller
             ]);
         }
 
-        // For web request
         return redirect()->back()->with('success', 'Doctor updated successfully');
     }
 

@@ -16,11 +16,8 @@ class DoctorSchedule extends Model
         'end_time',
         'status',
     ];
-    public function scopeActive($query)
-    {
-        return $query->where('status', 1);
-    }
-        public function doctor()
+    
+    public function doctor()
     {
         return $this->belongsTo(Doctor::class, 'doctor_id');
     }
