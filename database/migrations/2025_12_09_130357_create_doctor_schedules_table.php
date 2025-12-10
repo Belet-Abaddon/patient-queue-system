@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('day'); 
             $table->time('start_time');
             $table->time('end_time'); 
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

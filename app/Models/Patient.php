@@ -12,9 +12,10 @@ class Patient extends Model
     protected $fillable = [
         'name',
         'phone',
-        'status',
+        'wait_status',
         'queue_number',
         'doctor_id',
+        'status',
     ];
     public function doctor()
     {

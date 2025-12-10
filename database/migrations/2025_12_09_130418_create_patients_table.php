@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone');
-            $table->string('status')->default('waiting');
+            $table->string('wait_status')->default('waiting');
             $table->integer('queue_number');
             $table->foreignId('doctor_id')->constrained('doctors')->onDelete('cascade');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

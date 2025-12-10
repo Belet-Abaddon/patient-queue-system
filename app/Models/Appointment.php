@@ -16,6 +16,7 @@ class Appointment extends Model
         'queue_number',
         'alert_before',
         'alert_sent',
+        'appstatus',
         'status',
     ];
     public function user()
