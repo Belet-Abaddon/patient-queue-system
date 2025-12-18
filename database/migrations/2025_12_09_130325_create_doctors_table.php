@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('specialist')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

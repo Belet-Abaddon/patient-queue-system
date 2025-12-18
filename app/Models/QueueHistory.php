@@ -23,4 +23,12 @@ class QueueHistory extends Model
     {
         return $this->belongsTo(Doctor::class, 'doctor_id');
     }
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+    public function scopeToday($query)
+    {
+        return $query->whereDate('call_time', today());
+    }
 }

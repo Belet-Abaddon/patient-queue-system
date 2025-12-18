@@ -12,9 +12,10 @@ class Patient extends Model
     protected $fillable = [
         'name',
         'phone',
-        'status',
+        'wait_status',
         'queue_number',
         'doctor_id',
+        'status',
     ];
     public function doctor()
     {
@@ -23,5 +24,25 @@ class Patient extends Model
     public function queueHistories()
     {
         return $this->hasMany(QueueHistory::class, 'patient_id');
+    }
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+    public function scopeWaiting($query)
+    {
+        return $query->where('wait_status', 'waiting');
+    }
+    public function scopeServing($query)
+    {
+        return $query->where('wait_status', 'serving');
+    }
+    public function scopeDone($query)
+    {
+        return $query->where('wait_status', 'done');
+    }
+    public function scopeToday($query)
+    {
+        return $query->whereDate('created_at', today());
     }
 }

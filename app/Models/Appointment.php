@@ -16,6 +16,7 @@ class Appointment extends Model
         'queue_number',
         'alert_before',
         'alert_sent',
+        'appstatus',
         'status',
     ];
     public function user()
@@ -29,5 +30,17 @@ class Appointment extends Model
     public function schedule()
     {
         return $this->belongsTo(DoctorSchedule::class, 'schedule_id');
+    }
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+    public function scopePending($query)
+    {
+        return $query->where('appstatus', 'pending');
+    }
+    public function scopeApproved($query)
+    {
+        return $query->where('appstatus', 'approved');
     }
 }
