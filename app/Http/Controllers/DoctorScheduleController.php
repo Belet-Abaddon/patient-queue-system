@@ -72,17 +72,17 @@ class DoctorScheduleController extends Controller
     }
     public function index()
     {
-        // $schedules = DoctorSchedule::with('doctor')
-        //     ->where('status', 1)
-        //     ->get();
+        $schedules = DoctorSchedule::with('doctor')
+            ->where('status', 1)
+            ->get();
 
-        // return response()->json([
-        //     'success' => true,
-        //     'data' => $schedules
-        // ]);
-        $schedules = DoctorSchedule::all();
         return response()->json([
+            'success' => true,
             'data' => $schedules
         ]);
+        // $schedules = DoctorSchedule::all();
+        // return response()->json([
+        //     'data' => $schedules
+        // ]);
     }
 }

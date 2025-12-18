@@ -12,10 +12,19 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        $doctors = Doctor::all();
+        $doctors = Doctor::with('doctor')
+        ->where('status',1);
         return response()->json([
             'data' => $doctors
         ]);
+        // $schedules = DoctorSchedule::with('doctor')
+        //     ->where('status', 1)
+        //     ->get();
+
+        // return response()->json([
+        //     'success' => true,
+        //     'data' => $schedules
+        // ]);
     }
 
     public function store(Request $request)
