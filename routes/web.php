@@ -23,4 +23,8 @@ Route::prefix('doctors')->group(function () {
     Route::get('/index', [DoctorController::class, 'index']);
 });
 
+Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+
 require __DIR__.'/auth.php';
