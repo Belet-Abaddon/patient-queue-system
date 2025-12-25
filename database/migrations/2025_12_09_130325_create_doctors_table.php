@@ -14,11 +14,15 @@ return new class extends Migration
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('specialization');
+            $table->string('email')->unique();
+            $table->string('phone')->unique();
+            $table->string('license')->unique();
+            $table->string('room')->nullable();
+            $table->text('bio')->nullable();
             $table->string('degree')->nullable();
-            $table->string('specialist')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
-            $table->tinyInteger('status')->default(1);
+            $table->enum('status', ['active', 'inactive', 'on_leave', 'retired'])->default('active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

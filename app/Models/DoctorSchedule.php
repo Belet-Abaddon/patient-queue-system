@@ -11,12 +11,17 @@ class DoctorSchedule extends Model
     use HasFactory;
     protected $fillable = [
         'doctor_id',
-        'day',
         'start_time',
         'end_time',
+        'shift_type',
+        'notes',
         'status',
+        'day'
     ];
-    
+    protected $casts = [
+        'start_time' => 'string',
+        'end_time' => 'string',
+    ];
     public function doctor()
     {
         return $this->belongsTo(Doctor::class, 'doctor_id');
