@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class DoctorController extends Controller
 {
@@ -181,5 +182,27 @@ class DoctorController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+    public function getTodayQueues()
+    {
+        $today = Carbon::today()->toDateString();
+        
+        $doctors = Doctor::with(['appointments' => function($query) use ($today) {
+            $query->where('status', 1)
+                ->whereDate('created_at', $today)
+                ->orderBy('queue_number');
+        }, 'appointments.user', 'appointments.schedule'])
+            ->where('status', 1)
+            ->get()
+            ->map(function($doctor) use ($today) {
+                // Add today's appointments separately for easier access
+                $doctor->appointments_today = $doctor->appointments->where('created_at', '>=', $today);
+                return $doctor;
+            });
+            
+        return response()->json([
+            'success' => true,
+            'data' => $doctors
+        ]);
     }
 }

@@ -24,7 +24,7 @@ Route::prefix('doctors')->group(function () {
     Route::get('/index', [DoctorController::class, 'index']);
 });
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('admin.dashboard');
 })->name('admin.dashboard');
 Route::get('/admin/patients', function () {

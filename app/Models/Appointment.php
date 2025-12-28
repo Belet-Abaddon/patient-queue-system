@@ -43,4 +43,5 @@ class Appointment extends Model
     {
         return $query->where('appstatus', 'approved');
     }
+    
 }

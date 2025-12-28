@@ -35,13 +35,22 @@
                             Doctors List
                         </h3>
                         <div class="flex items-center space-x-2">
-                            <select id="departmentFilter" class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
-                                <option value="">All Departments</option>
-                                <option value="Emergency">Emergency</option>
-                                <option value="Pediatrics">Pediatrics</option>
-                                <option value="Cardiology">Cardiology</option>
-                                <option value="General">General Medicine</option>
-                                <option value="Surgery">Surgery</option>
+                            <select id="specializationFilter" class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                                <option value="">All Specializations</option>
+                                <option value="Cardiology">Heart</option>
+                                <option value="Pulmonology">Lungs</option>
+                                <option value="Hepatology">Liver</option>
+                                <option value="Orthopedics">Bones</option>
+                                <option value="Neurology">Brain</option>
+                                <option value="Nephrology">Kidneys</option>
+                                <option value="Gastroenterology">Stomach</option>
+                                <option value="Urology">Urinary</option>
+                                <option value="Dermatology">Skin</option>
+                                <option value="Ophthalmology">Eyes</option>
+                                <option value="ENT">Ear/Nose/Throat</option>
+                                <option value="General Medicine">General</option>
+                                <option value="Pediatrics">Children</option>
+                                <option value="Emergency Medicine">Emergency</option>
                             </select>
                         </div>
                     </div>
@@ -237,14 +246,20 @@
                                         <select name="specialization" required
                                             class="w-full border border-gray-300 rounded-lg px-3 py-2">
                                             <option value="">Select Specialization</option>
-                                            <option value="Emergency Medicine">Emergency Medicine</option>
-                                            <option value="Pediatrics">Pediatrics</option>
-                                            <option value="Cardiology">Cardiology</option>
-                                            <option value="General Medicine">General Medicine</option>
-                                            <option value="Surgery">Surgery</option>
-                                            <option value="Orthopedics">Orthopedics</option>
-                                            <option value="Neurology">Neurology</option>
-                                            <option value="Dermatology">Dermatology</option>
+                                            <option value="Cardiology">Heart</option>
+                                            <option value="Pulmonology">Lungs</option>
+                                            <option value="Hepatology">Liver</option>
+                                            <option value="Orthopedics">Bones</option>
+                                            <option value="Neurology">Brain</option>
+                                            <option value="Nephrology">Kidneys</option>
+                                            <option value="Gastroenterology">Stomach</option>
+                                            <option value="Urology">Urinary</option>
+                                            <option value="Dermatology">Skin</option>
+                                            <option value="Ophthalmology">Eyes</option>
+                                            <option value="ENT">Ear/Nose/Throat</option>
+                                            <option value="General Medicine">General</option>
+                                            <option value="Pediatrics">Children</option>
+                                            <option value="Emergency Medicine">Emergency</option>
                                         </select>
                                     </div>
                                     <div>
@@ -519,7 +534,7 @@
         setupSearch();
 
         // Event listeners
-        document.getElementById('departmentFilter').addEventListener('change', function() {
+        document.getElementById('specializationFilter').addEventListener('change', function() {
             const searchTerm = document.getElementById('doctorSearch').value;
             filterDoctorsByName(searchTerm);
         });
@@ -870,15 +885,15 @@
 
     // DATA LOADING FUNCTIONS
     async function loadDoctors() {
-        const departmentFilter = document.getElementById('departmentFilter').value;
+        const specializationFilter = document.getElementById('specializationFilter').value;
         const container = document.getElementById('doctorsList');
 
         container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i><p class="mt-2 text-gray-600">Loading doctors...</p></div>';
 
         try {
             let url = '/api/doctors';
-            if (departmentFilter) {
-                url += `?specialization=${encodeURIComponent(departmentFilter)}`;
+            if (specializationFilter) {
+                url += `?specialization=${encodeURIComponent(specializationFilter)}`;
             }
 
             const response = await fetch(url);
@@ -1118,10 +1133,10 @@
 
             let filteredDoctors = data.success ? data.data : [];
 
-            const departmentFilter = document.getElementById('departmentFilter').value;
-            if (departmentFilter && searchTerm.trim()) {
+            const specializationFilter = document.getElementById('specializationFilter').value;
+            if (specializationFilter && searchTerm.trim()) {
                 filteredDoctors = filteredDoctors.filter(d =>
-                    d.specialization.toLowerCase().includes(departmentFilter.toLowerCase())
+                    d.specialization.toLowerCase().includes(specializationFilter.toLowerCase())
                 );
             }
 

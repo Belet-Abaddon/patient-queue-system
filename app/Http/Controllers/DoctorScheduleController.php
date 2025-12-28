@@ -6,6 +6,7 @@ use App\Models\DoctorSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DoctorScheduleController extends Controller
 {
@@ -239,5 +240,21 @@ class DoctorScheduleController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+    public function getAvailableSchedules($doctorId, Request $request)
+    {
+        $date = $request->get('date', Carbon::today()->toDateString());
+        $dayOfWeek = Carbon::parse($date)->dayOfWeek; // 0 = Sunday, 1 = Monday, etc.
+        
+        $schedules = DoctorSchedule::where('doctor_id', $doctorId)
+            ->where('day', $dayOfWeek)
+            ->whereIn('status', ['scheduled', 'confirmed'])
+            ->orderBy('start_time')
+            ->get();
+            
+        return response()->json([
+            'success' => true,
+            'data' => $schedules
+        ]);
     }
 }
