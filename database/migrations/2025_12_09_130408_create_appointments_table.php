@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('doctor_id')->constrained('doctors')->onDelete('cascade');
             $table->foreignId('schedule_id')->constrained('doctor_schedules')->onDelete('cascade');
+            $table->date('appointment_date')->nullable();
             $table->integer('queue_number');
             $table->integer('alert_before')->default(3);
             $table->tinyInteger('alert_sent')->default(0);
@@ -24,7 +25,7 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */

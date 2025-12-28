@@ -11,11 +11,17 @@ class Doctor extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'degree',
-        'specialist',
+        'specialization',
         'email',
         'phone',
-        'status'
+        'license',
+        'room',
+        'bio',
+        'status',
+        'degree'
+    ];
+    protected $casts = [
+        'status' => 'string',
     ];
     public function patients()
     {
@@ -28,5 +34,9 @@ class Doctor extends Model
     public function queueHistories()
     {
         return $this->hasMany(QueueHistory::class, 'doctor_id');
+    }
+    public function getAvatarAttribute()
+    {
+        return "https://ui-avatars.com/api/?name=" . urlencode($this->name) . "&background=3b82f6&color=fff";
     }
 }

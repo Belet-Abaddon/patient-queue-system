@@ -19,8 +19,17 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
+        'date_of_birth',
+        'gender',
+        'address',
+        'blood_type',
+        'allergies',
+        'emergency_contact',
+        'emergency_phone',
+        'marital_status',
         'password',
         'phone',
         'role',
@@ -47,6 +56,9 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'date_of_birth' => 'date',
+            'status' => 'integer',
+            'role' => 'integer',
         ];
     }
     public function appointments()

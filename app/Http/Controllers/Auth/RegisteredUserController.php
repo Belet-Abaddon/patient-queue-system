@@ -29,20 +29,44 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+        $validated = $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'date_of_birth' => ['required', 'date'],
+            'gender' => ['required', 'in:male,female,other'],
+            'address' => ['required', 'string', 'max:500'],
+            'phone' => ['required', 'string', 'max:20'],
+            'blood_type' => ['nullable', 'string', 'max:10'],
+            'allergies' => ['nullable', 'string', 'max:500'],
+            'emergency_contact' => ['nullable', 'string', 'max:255'],
+            'emergency_phone' => ['nullable', 'string', 'max:20'],
+            'marital_status' => ['nullable', 'in:single,married,divorced,widowed'],
         ]);
 
+        $validated['role'] = 2;
+        $validated['status'] = 1;
+
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'date_of_birth' => $validated['date_of_birth'],
+            'gender' => $validated['gender'],
+            'address' => $validated['address'],
+            'blood_type' => $validated['blood_type'] ?? null,
+            'allergies' => $validated['allergies'] ?? null,
+            'emergency_contact' => $validated['emergency_contact'] ?? null,
+            'emergency_phone' => $validated['emergency_phone'] ?? null,
+            'marital_status' => $validated['marital_status'] ?? null,
+            'password' => Hash::make($validated['password']),
+            'role' => 2,
+            'status' => 1,
         ]);
 
         event(new Registered($user));
-
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));

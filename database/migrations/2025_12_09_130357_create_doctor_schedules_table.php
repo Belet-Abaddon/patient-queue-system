@@ -14,11 +14,15 @@ return new class extends Migration
         Schema::create('doctor_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('doctor_id')->constrained('doctors')->onDelete('cascade');
-            $table->string('day'); 
-            $table->time('start_time');
-            $table->time('end_time'); 
-            $table->tinyInteger('status')->default(1);
+            $table->string('start_time');
+            $table->string('end_time');
+            $table->enum('shift_type', ['morning', 'afternoon', 'evening', 'night', 'on_call', 'full_day']);
+            $table->enum('status', ['scheduled', 'confirmed', 'cancelled'])->default('scheduled');
+            $table->text('notes')->nullable();
+            $table->string('day')->nullable();
+            $table->softDeletes();
             $table->timestamps();
+            $table->index(['doctor_id']);
         });
     }
 

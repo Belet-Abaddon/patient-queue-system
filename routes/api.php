@@ -7,19 +7,15 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\QueueHistoryController;
 
-Route::prefix('doctors')->group(function () {
-    Route::post('/store', [DoctorController::class, 'store']);
-    Route::post('/update', [DoctorController::class, 'update']);
-    Route::post('/delete/{id}', [DoctorController::class, 'destroy']);
+// Doctor Routes
+Route::apiResource('doctors', DoctorController::class);
+Route::get('doctors/{id}/schedules', [DoctorScheduleController::class, 'getByDoctor']);
 
-});
-Route::prefix('doctor-schedules')->group(function () {
-    Route::post('/store', [DoctorScheduleController::class, 'store']);
-    Route::post('/update', [DoctorScheduleController::class, 'update']);
-    Route::post('/delete/{id}', [DoctorScheduleController::class, 'destroy']);
-    Route::get('/index', [DoctorScheduleController::class, 'index']);
-    Route::get('/doctor/{doctorId}', [DoctorScheduleController::class, 'getByDoctor']);
-});
+// Schedule Routes
+Route::apiResource('schedules', DoctorScheduleController::class);
+Route::get('schedules/weekly', [DoctorScheduleController::class, 'getWeeklySchedules']);
+
+// Appointment Routes
 Route::prefix('appointments')->group(function () {
     Route::post('/store', [AppointmentController::class, 'store']);
     Route::post('/update', [AppointmentController::class, 'update']);
