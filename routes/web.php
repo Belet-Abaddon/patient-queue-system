@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorScheduleController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\QueueHistoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,9 +47,19 @@ Route::prefix('api')->group(function () {
     Route::get('doctors/{id}/schedules', [DoctorScheduleController::class, 'getByDoctor']);
 });
 
-Route::get('/admin/appointment', function () {
-    return view('admin.appointment');
-})->name('admin.appointment');
+// Appointment Routes
+Route::get('/admin/appointment', [AppointmentController::class, 'index'])->name('admin.appointment');
+
+// Appointment AJAX routes
+Route::prefix('ajax')->group(function () {
+    Route::get('/appointments', [AppointmentController::class, 'getAppointments']);
+    Route::get('/appointments/today', [AppointmentController::class, 'getTodaysAppointments']);
+    Route::get('/appointments/today-statistics', [AppointmentController::class, 'getTodayStatistics']);
+    Route::post('/appointments/change-status', [AppointmentController::class, 'changeStatus']);
+    Route::post('/appointments/delete', [AppointmentController::class, 'destroy']);
+    Route::post('/appointments/store', [AppointmentController::class, 'store']);
+});
+
 Route::get('/admin/queue-history', function () {
     return view('admin.queue-history');
 })->name('admin.queue-history');

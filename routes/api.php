@@ -16,16 +16,17 @@ Route::apiResource('schedules', DoctorScheduleController::class);
 Route::get('schedules/weekly', [DoctorScheduleController::class, 'getWeeklySchedules']);
 
 // Appointment Routes
-Route::prefix('appointments')->group(function () {
-    Route::post('/store', [AppointmentController::class, 'store']);
-    Route::post('/update', [AppointmentController::class, 'update']);
-    Route::post('/delete', [AppointmentController::class, 'destroy']);
-    Route::post('/change-status', [AppointmentController::class, 'changeStatus']);
-    Route::get('/user/{userId}', [AppointmentController::class, 'getByUser']);
-    Route::get('/doctor/{doctorId}', [AppointmentController::class, 'getByDoctor']);
-    Route::get('/today/{doctorId}', [AppointmentController::class, 'getTodayAppointments']);
-    Route::get('/next-queue/{doctorId}', [AppointmentController::class, 'getNextQueue']);
-});
+// Route::apiResource('appointments', AppointmentController::class);
+// Route::get('appointments/today', [AppointmentController::class, 'getTodaysAppointments']);
+// Route::get('appointments/doctor-queues', [AppointmentController::class, 'getDoctorQueues']);
+// Route::get('appointments/doctor/{doctorId}/today', [AppointmentController::class, 'getDoctorAppointmentsToday']);
+// Route::get('appointments/today-statistics', [AppointmentController::class, 'getTodayStatistics']);
+// Route::post('appointments/call-next', [AppointmentController::class, 'callNextPatient']);
+// Route::post('appointments/complete-current', [AppointmentController::class, 'completeCurrentAppointment']);
+// Route::post('appointments/change-status', [AppointmentController::class, 'changeStatus']);
+// Route::post('appointments/delete', [AppointmentController::class, 'destroy']);
+
+
 // Patient Routes
 Route::prefix('patients')->group(function () {
     Route::post('/store', [PatientController::class, 'store']);
